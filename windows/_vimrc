@@ -1,16 +1,49 @@
+set nocompatible
+source $VIMRUNTIME/vimrc_example.vim
+source $VIMRUNTIME/mswin.vim
+behave mswin
+ 
+set encoding=utf-8                                    "设置gvim内部编码  
+set fileencoding=utf-8                                "设置当前文件编码 
+set fileencodings=ucs-bom,utf-8,gbk,cp936,latin-1     "设置支持打开的文件的编码 
+
+set ts=4 
+set expandtab 
+set autoindent 
+
+
+set diffexpr=MyDiff()
+function MyDiff()
+  let opt = '-a --binary '
+  if &diffopt =~ 'icase' | let opt = opt . '-i ' | endif
+  if &diffopt =~ 'iwhite' | let opt = opt . '-b ' | endif
+  let arg1 = v:fname_in
+  if arg1 =~ ' ' | let arg1 = '"' . arg1 . '"' | endif
+  let arg2 = v:fname_new
+  if arg2 =~ ' ' | let arg2 = '"' . arg2 . '"' | endif
+  let arg3 = v:fname_out
+  if arg3 =~ ' ' | let arg3 = '"' . arg3 . '"' | endif
+  let eq = ''
+  if $VIMRUNTIME =~ ' '
+    if &sh =~ '\<cmd'
+      let cmd = '""' . $VIMRUNTIME . '\diff"'
+      let eq = '"'
+    else
+      let cmd = substitute($VIMRUNTIME, ' ', '" ', '') . '\diff"'
+    endif
+  else
+    let cmd = $VIMRUNTIME . '\diff'
+  endif
+  silent execute '!' . cmd . ' ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3 . eq
+endfunction
+
+
 runtime bundle/pathogen/autoload/pathogen.vim
 execute pathogen#infect()
 
 
 filetype on
 filetype plugin on
-
-
-
-set ts=4 
-set expandtab 
-set autoindent 
-
 
 set columns=120
 "set foldmethod=indent
@@ -65,7 +98,8 @@ let NERDTreeShowHidden=1
 let NERDTreeMinimalUI=1
 let NERDTreeAutoDeleteBuffer=1
 
-set guifont=Courier\ 15 "字体
+set guifont=Consolas:h10
+
 
 set autochdir
 
@@ -77,21 +111,3 @@ nmap <Leader>man :Man 3 <cword><CR>
 nmap <Leader>m :wa<CR>:make<CR><CR>:cw<CR>
 nnoremap <Leader>sp :Grep -ir<CR><CR><CR>
 nnoremap <Leader>sb :GrepBuffer -ir<CR><CR><CR>
-
-
-highlight Pmenu ctermfg=2 ctermbg=3 guifg=#005f87 guibg=#EEE8D5
-highlight PmenuSel ctermfg=2 ctermbg=3 guifg=#AFD700 guibg=#106900
-let g:ycm_complete_in_comments=1
-let g:ycm_confirm_extra_conf=0
-let g:ycm_collect_identifiers_form_tags_files=1
-set tags+=/data/misc/software/misc./vim/stdcpp.tags
-inoremap <leader>; <C-x><C-o>
-set completeopt-=preview
-let g:ycm_min_num_of_chars_for_completion=1
-let g:ycm_cache_omnifunc=0
-let g:ycm_seed_identifiers_with_syntax=1
-
-
-let g:UltiSnipsExpandTrigger="<leader><tab>"
-let g:UltiSnipsJumpForwardTrigger="<leader><tab>"
-let g:UltiSnipsJumpBackwardTrigger="<leader><s-tab>"

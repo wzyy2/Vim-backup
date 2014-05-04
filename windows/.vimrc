@@ -5,13 +5,6 @@ execute pathogen#infect()
 filetype on
 filetype plugin on
 
-
-
-set ts=4 
-set expandtab 
-set autoindent 
-
-
 set columns=120
 "set foldmethod=indent
 set foldmethod=syntax
