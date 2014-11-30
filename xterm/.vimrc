@@ -1,18 +1,14 @@
 runtime bundle/pathogen/autoload/pathogen.vim
 execute pathogen#infect()
 
+set encoding=utf-8                                    "设置gvim内部编码  
+set fileencoding=utf-8                                "设置当前文件编码 
+set fileencodings=ucs-bom,utf-8,gbk,cp936,latin-1     "设置支持打开的文件的编码 
 
 filetype on
 filetype plugin on
 
-
-
-set ts=4 
-set expandtab 
-set autoindent 
-
-
-set columns=120
+set columns=80
 "set foldmethod=indent
 set foldmethod=syntax
 set nofoldenable
@@ -65,7 +61,7 @@ let NERDTreeShowHidden=1
 let NERDTreeMinimalUI=1
 let NERDTreeAutoDeleteBuffer=1
 
-set guifont=Courier\ 15 "字体
+set guifont=Courier\ 12 "字体
 
 set autochdir
 

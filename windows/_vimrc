@@ -3,14 +3,22 @@ source $VIMRUNTIME/vimrc_example.vim
 source $VIMRUNTIME/mswin.vim
 behave mswin
  
+"without name
+"nmap <buffer> <silent> <leader> ,PN 
+"nmap <buffer> <silent> <leader> ,PP
+
+
 set encoding=utf-8                                    "设置gvim内部编码  
-set fileencoding=utf-8                                "设置当前文件编码 
 set fileencodings=ucs-bom,utf-8,gbk,cp936,latin-1     "设置支持打开的文件的编码 
 
 set ts=4 
 set expandtab 
 set autoindent 
-
+"解决菜单乱码
+source $VIMRUNTIME/delmenu.vim
+source $VIMRUNTIME/menu.vim
+"解决consle输出乱码
+language messages zh_CN.utf-8
 
 set diffexpr=MyDiff()
 function MyDiff()
@@ -59,12 +67,13 @@ set ruler
 "set cursorline
 "set cursorcolumn
 set hlsearch
-set guioptions-=m
-set guioptions-=T
+"set guioptions-=m
+"set guioptions-=T
 set background=dark
 syntax enable
 colorscheme molokai
 "colorscheme solarized
+
 
 nmap <Leader>tn :tnext<CR>
 nmap <Leader>tp :tprevious<CR>
@@ -111,3 +120,40 @@ nmap <Leader>man :Man 3 <cword><CR>
 nmap <Leader>m :wa<CR>:make<CR><CR>:cw<CR>
 nnoremap <Leader>sp :Grep -ir<CR><CR><CR>
 nnoremap <Leader>sb :GrepBuffer -ir<CR><CR><CR>
+
+
+"Toggle Menu and Toolbar
+ set guioptions-=m
+ set guioptions-=T
+ map <silent> <F3> :if &guioptions =~# 'T' <Bar>
+         \set guioptions-=T <Bar>
+         \set guioptions-=m <bar>
+     \else <Bar>
+         \set guioptions+=T <Bar>
+         \set guioptions+=m <Bar>
+     \endif<CR>
+
+
+function! AutoLoadCTagsAndCScope()
+    let max = 5
+    let dir = './'
+    let i = 0
+    let break = 0
+    while isdirectory(dir) && i < max
+        if filereadable(dir . 'cscope.out') 
+            execute 'cs add ' . dir . 'cscope.out'
+            let break = 1
+        endif
+        if filereadable(dir . 'tags')
+            execute 'set tags =' . dir . 'tags'
+            let break = 1
+        endif
+        if break == 1
+            execute 'lcd ' . dir
+            break
+        endif
+        let dir = dir . '../'
+        let i = i + 1
+    endwhile
+endf
+nmap <F7> :call AutoLoadCTagsAndCScope()<CR>

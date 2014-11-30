@@ -1,16 +1,13 @@
 runtime bundle/pathogen/autoload/pathogen.vim
 execute pathogen#infect()
 
+set encoding=utf-8                                    "设置gvim内部编码  
+set fileencoding=utf-8                                "设置当前文件编码 
+set fileencodings=ucs-bom,utf-8,gbk,cp936,latin-1,gb2312     "设置支持打开的文件的编码 
+
 
 filetype on
 filetype plugin on
-
-
-
-set ts=4 
-set expandtab 
-set autoindent 
-
 
 set columns=120
 "set foldmethod=indent
@@ -36,6 +33,9 @@ colorscheme molokai
 nmap <Leader>tn :tnext<CR>
 nmap <Leader>tp :tprevious<CR>
 
+"without name
+"nmap <buffer> <silent> <leader> ,PN 
+"nmap <buffer> <silent> <leader> ,PP
 
 nmap <Leader>ch :A<CR>
 nmap <Leader>sch :AS<CR>
@@ -65,7 +65,7 @@ let NERDTreeShowHidden=1
 let NERDTreeMinimalUI=1
 let NERDTreeAutoDeleteBuffer=1
 
-set guifont=Courier\ 15 "字体
+set guifont=Courier\ 12 "字体
 
 set autochdir
 
@@ -95,3 +95,40 @@ let g:ycm_seed_identifiers_with_syntax=1
 let g:UltiSnipsExpandTrigger="<leader><tab>"
 let g:UltiSnipsJumpForwardTrigger="<leader><tab>"
 let g:UltiSnipsJumpBackwardTrigger="<leader><s-tab>"
+
+
+"Toggle Menu and Toolbar
+set guioptions-=m
+set guioptions-=T
+map <silent> <F3> :if &guioptions =~# 'T' <Bar>
+        \set guioptions-=T <Bar>
+        \set guioptions-=m <bar>
+    \else <Bar>
+        \set guioptions+=T <Bar>
+        \set guioptions+=m <Bar>
+    \endif<CR>
+
+
+function! AutoLoadCTagsAndCScope()
+    let max = 5
+    let dir = './'
+    let i = 0
+    let break = 0
+    while isdirectory(dir) && i < max
+        if filereadable(dir . 'cscope.out') 
+            execute 'cs add ' . dir . 'cscope.out'
+            let break = 1
+        endif
+        if filereadable(dir . 'tags')
+            execute 'set tags =' . dir . 'tags'
+            let break = 1
+        endif
+        if break == 1
+            execute 'lcd ' . dir
+            break
+        endif
+        let dir = dir . '../'
+        let i = i + 1
+    endwhile
+endf
+nmap <F7> :call AutoLoadCTagsAndCScope()<CR>
