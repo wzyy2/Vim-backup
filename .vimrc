@@ -5,6 +5,10 @@ set encoding=utf-8                                    "设置gvim内部编码
 set fileencoding=utf-8                                "设置当前文件编码 
 set fileencodings=ucs-bom,utf-8,gbk,cp936,latin-1,gb2312     "设置支持打开的文件的编码 
 
+set ts=4
+set expandtab
+set cindent
+set shiftwidth=4
 
 filetype on
 filetype plugin on
@@ -65,7 +69,7 @@ let NERDTreeShowHidden=1
 let NERDTreeMinimalUI=1
 let NERDTreeAutoDeleteBuffer=1
 
-set guifont=Courier\ 12 "字体
+set guifont=Courier\ 11 "字体
 
 set autochdir
 
@@ -90,6 +94,9 @@ set completeopt-=preview
 let g:ycm_min_num_of_chars_for_completion=1
 let g:ycm_cache_omnifunc=0
 let g:ycm_seed_identifiers_with_syntax=1
+let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/cpp/ycm/.ycm_extra_conf.py'
+let g:ycm_collect_identifiers_from_tag_files = 1
+
 
 
 let g:UltiSnipsExpandTrigger="<leader><tab>"
@@ -110,7 +117,7 @@ map <silent> <F3> :if &guioptions =~# 'T' <Bar>
 
 
 function! AutoLoadCTagsAndCScope()
-    let max = 5
+    let max = 8
     let dir = './'
     let i = 0
     let break = 0
